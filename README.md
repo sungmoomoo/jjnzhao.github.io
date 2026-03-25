@@ -2,7 +2,7 @@
 
 ASLAB (Assessment Lab) is a lightweight web-based tool designed to automate post-exam item analysis across multiple subjects and students
 
-Instead of manually encoding and analyzing test results, ASLAB processes structured data and instantly generates per-subject item analysis, difficulty indices, discrimination indices, and actionable insights**.
+Instead of manually encoding and analyzing test results, ASLAB processes structured data and instantly generates per-subject item analysis, difficulty indices, discrimination indices, and actionable insights.
 
 After exams, teachers often:
 
