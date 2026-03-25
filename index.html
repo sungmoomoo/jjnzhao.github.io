@@ -15,84 +15,405 @@
       background: linear-gradient(135deg, #1e2937 0%, #0f172a 100%);
     }
     .fade-in {
-      animation: fadeIn 1s ease forwards;
+      animation: fadeIn 1.2s ease forwards;
     }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .glass {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(12px);
+    .card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
     }
   </style>
 </head>
-<body class="bg-zinc-950 text-white min-h-screen overflow-hidden">
+<body class="bg-zinc-950 text-white min-h-screen">
 
   <!-- Welcome Screen -->
   <div id="welcome-screen" class="hero-bg min-h-screen flex items-center justify-center relative">
     <div class="absolute inset-0 bg-[radial-gradient(at_center,#3b82f610_0%,transparent_70%)]"></div>
     
     <div class="max-w-2xl mx-auto text-center px-6 fade-in">
-      <!-- Logo -->
       <div class="flex justify-center mb-8">
         <div class="flex items-center gap-4">
-          <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-2xl">
-            <i class="fa-solid fa-flask text-4xl"></i>
+          <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-3xl flex items-center justify-center shadow-2xl">
+            <i class="fa-solid fa-flask text-5xl text-white"></i>
           </div>
           <div class="text-left">
-            <h1 class="text-5xl font-bold tracking-tighter">ASLAB</h1>
-            <p class="text-blue-400 text-lg -mt-1">Assessment Lab</p>
+            <h1 class="text-6xl font-bold tracking-tighter">ASLAB</h1>
+            <p class="text-blue-400 text-2xl -mt-2">Assessment Lab</p>
           </div>
         </div>
       </div>
 
-      <h2 class="text-6xl font-semibold tracking-tight mb-6 leading-tight">
-        Make better assessments.<br>
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">In seconds.</span>
+      <h2 class="text-6xl font-semibold tracking-tighter mb-6 leading-none">
+        Better assessments.<br>
+        <span class="bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">Smarter insights.</span>
       </h2>
 
-      <p class="text-xl text-zinc-400 max-w-md mx-auto mb-12">
+      <p class="text-xl text-zinc-400 max-w-lg mx-auto mb-12">
         Professional item analysis with difficulty, discrimination, 
-        distractor insights and smart recommendations.
+        distractor performance and actionable recommendations.
       </p>
 
-      <!-- Buttons -->
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <button onclick="startApp()" 
-                class="group px-10 py-5 bg-white text-zinc-900 rounded-2xl font-semibold text-lg flex items-center justify-center gap-3 hover:scale-105 transition-all duration-300">
-          <span>Get Started Free</span>
+                class="group px-12 py-6 bg-white text-zinc-900 rounded-3xl font-semibold text-xl flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all duration-300 shadow-xl">
+          Get Started
           <i class="fa-solid fa-arrow-right group-active:translate-x-1 transition"></i>
         </button>
 
-        <button onclick="loadSampleData()" 
-                class="px-8 py-5 border border-zinc-700 hover:border-zinc-500 rounded-2xl font-medium text-lg flex items-center gap-3 transition">
+        <button onclick="loadSampleAndStart()" 
+                class="px-10 py-6 border border-zinc-600 hover:border-zinc-400 rounded-3xl font-medium text-xl flex items-center gap-3 transition">
           <i class="fa-solid fa-file-chart-column"></i>
-          Try with Sample Data
+          Try Sample Data
         </button>
       </div>
 
-      <div class="mt-16 text-xs text-zinc-500 flex items-center justify-center gap-8">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-check"></i>
-          No signup required
-        </div>
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-check"></i>
-          Works offline
-        </div>
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-check"></i>
-          Export reports
-        </div>
+      <div class="mt-16 flex justify-center gap-10 text-sm text-zinc-500">
+        <div class="flex items-center gap-2"><i class="fa-solid fa-check"></i> No signup</div>
+        <div class="flex items-center gap-2"><i class="fa-solid fa-check"></i> Works offline</div>
+        <div class="flex items-center gap-2"><i class="fa-solid fa-check"></i> Export results</div>
       </div>
     </div>
 
-    <!-- Subtle footer -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 text-zinc-500 text-sm">
-      Built for teachers • Powered by psychometrics
+    <div class="absolute bottom-10 text-zinc-500 text-sm">
+      Built for educators • Powered by classical test theory
     </div>
   </div>
 
-  <!-- Main App (hidden initially) -->
-  <div id="main-app" class="hidden min-h-screen bg-zinc-100
+  <!-- Main Application -->
+  <div id="main-app" class="hidden min-h-screen bg-zinc-100 dark:bg-zinc-950">
+
+    <!-- Header -->
+    <header class="bg-zinc-900 text-white py-5 px-8 flex items-center justify-between sticky top-0 z-50">
+      <div class="flex items-center gap-3">
+        <i onclick="showWelcome()" class="fa-solid fa-flask text-3xl text-blue-500 cursor-pointer hover:scale-110 transition"></i>
+        <div>
+          <h1 class="text-2xl font-bold tracking-tight">ASLAB</h1>
+          <p class="text-xs text-zinc-400 -mt-1">Assessment Lab</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-6">
+        <button onclick="showWelcome()" 
+                class="flex items-center gap-2 px-5 py-2 hover:bg-zinc-800 rounded-2xl transition">
+          <i class="fa-solid fa-home"></i>
+          <span class="hidden sm:inline">Home</span>
+        </button>
+        <button onclick="toggleTheme()" class="p-3 rounded-2xl hover:bg-zinc-800 transition">
+          <i id="theme-icon" class="fa-solid fa-moon text-xl"></i>
+        </button>
+      </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto p-6">
+
+      <!-- Upload Card -->
+      <div class="card bg-white dark:bg-zinc-900 rounded-3xl shadow-xl p-10 mb-10">
+        <h2 class="text-3xl font-semibold mb-2">Upload Student Responses</h2>
+        <p class="text-zinc-500 dark:text-zinc-400 mb-8">Format: <code class="bg-zinc-100 dark:bg-zinc-800 px-2 py-1 rounded">StudentID,Subject,Q1,Q2,Q3,...</code></p>
+
+        <!-- Dropzone -->
+        <div id="dropzone"
+             class="border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-3xl p-16 text-center cursor-pointer hover:border-blue-500 transition-all">
+          <i class="fa-solid fa-cloud-arrow-up text-6xl text-zinc-400 mb-6"></i>
+          <p class="text-2xl font-medium mb-2">Drag &amp; drop your CSV file</p>
+          <p class="text-zinc-500">or click to browse</p>
+          <label class="mt-6 inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl cursor-pointer font-medium">
+            Browse File
+            <input type="file" id="fileInput" accept=".csv" class="hidden">
+          </label>
+        </div>
+
+        <div class="my-8 text-center text-zinc-400">— or paste data below —</div>
+
+        <textarea id="data" rows="7"
+                  class="w-full p-6 border border-zinc-300 dark:border-zinc-700 rounded-3xl font-mono text-sm bg-white dark:bg-zinc-950 focus:outline-none focus:border-blue-500"
+                  placeholder="Student1,Math,A,B,C,D,A&#10;Student1,Science,B,B,C,D,A&#10;..."></textarea>
+
+        <button onclick="analyze()" 
+                class="mt-8 w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 py-6 rounded-3xl font-semibold text-xl flex items-center justify-center gap-3 shadow-lg">
+          <i class="fa-solid fa-chart-bar"></i>
+          Analyze All Subjects
+        </button>
+      </div>
+
+      <!-- Results Area -->
+      <div id="output" class="space-y-12"></div>
+    </div>
+  </div>
+
+<script>
+// ====================== Core Functions ======================
+
+let isDark = true;
+
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.classList.toggle('dark', isDark);
+  const icon = document.getElementById('theme-icon');
+  icon.classList.toggle('fa-moon', !isDark);
+  icon.classList.toggle('fa-sun', isDark);
+}
+
+function startApp() {
+  document.getElementById('welcome-screen').classList.add('hidden');
+  document.getElementById('main-app').classList.remove('hidden');
+}
+
+function showWelcome() {
+  document.getElementById('welcome-screen').classList.remove('hidden');
+  document.getElementById('main-app').classList.add('hidden');
+}
+
+function loadSampleAndStart() {
+  document.getElementById('data').value = `Student1,Math,A,B,C,D,A
+Student1,Science,B,B,C,D,A
+Student2,Math,A,B,D,D,A
+Student2,Science,B,C,C,D,A
+Student3,Math,A,B,C,D,B
+Student3,Science,B,B,C,D,A
+Student4,Math,B,A,C,D,A
+Student4,Science,A,B,C,D,A
+Student5,Math,A,B,C,D,A
+Student5,Science,B,B,C,D,A
+Student6,Math,A,B,C,D,A
+Student6,Science,B,A,C,D,A`;
+  startApp();
+  setTimeout(analyze, 300);
+}
+
+// File Handling
+function handleFile(e) {
+  const file = e.target.files ? e.target.files[0] : e.dataTransfer.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = ev => {
+    document.getElementById('data').value = ev.target.result;
+    startApp();
+    setTimeout(analyze, 100);
+  };
+  reader.readAsText(file);
+}
+
+// Drag & Drop
+const dropzone = document.getElementById('dropzone');
+dropzone.addEventListener('dragover', e => {
+  e.preventDefault();
+  dropzone.classList.add('border-blue-500', 'bg-blue-50', 'dark:bg-blue-950/30');
+});
+dropzone.addEventListener('dragleave', () => {
+  dropzone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-950/30');
+});
+dropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropzone.classList.remove('border-blue-500', 'bg-blue-50', 'dark:bg-blue-950/30');
+  handleFile(e);
+});
+document.getElementById('fileInput').addEventListener('change', handleFile);
+
+// ====================== Main Analysis ======================
+function analyze() {
+  const raw = document.getElementById('data').value.trim();
+  if (!raw) {
+    alert("Please paste data or upload a CSV file.");
+    return;
+  }
+
+  const rows = raw.split('\n').map(r => r.split(',').map(c => c.trim()));
+  const grouped = {};
+
+  rows.forEach(row => {
+    if (row.length < 3) return;
+    const subject = row[1];
+    const answers = row.slice(2);
+    if (!grouped[subject]) grouped[subject] = [];
+    grouped[subject].push({id: row[0], answers});
+  });
+
+  let html = `<h2 class="text-4xl font-bold mb-10 flex items-center gap-4"><i class="fa-solid fa-chart-pie text-blue-500"></i> Analysis Results</h2>`;
+
+  Object.keys(grouped).forEach(subject => {
+    const students = grouped[subject];
+    const n = students.length;
+    if (n < 5) {
+      html += `<div class="p-8 bg-amber-100 dark:bg-amber-950 rounded-3xl text-center">Not enough students for reliable analysis in <strong>${subject}</strong> (need at least 5).</div>`;
+      return;
+    }
+
+    const numQ = students[0].answers.length;
+
+    // Determine correct answer (most frequent)
+    const key = [];
+    for (let q = 0; q < numQ; q++) {
+      const freq = {};
+      students.forEach(s => {
+        const ans = s.answers[q];
+        freq[ans] = (freq[ans] || 0) + 1;
+      });
+      key[q] = Object.keys(freq).reduce((a, b) => freq[a] > freq[b] ? a : b);
+    }
+
+    // Scores
+    const scores = students.map(s => 
+      s.answers.reduce((acc, ans, i) => acc + (ans === key[i] ? 1 : 0), 0)
+    );
+
+    const meanScore = (scores.reduce((a,b) => a+b, 0) / n).toFixed(2);
+    const sortedStudents = students.map((s,i) => ({...s, score: scores[i]}))
+                                   .sort((a,b) => b.score - a.score);
+
+    const groupSize = Math.max(1, Math.floor(n * 0.27));
+    const upper = sortedStudents.slice(0, groupSize);
+    const lower = sortedStudents.slice(-groupSize);
+
+    // Score distribution for chart
+    const scoreCounts = {};
+    scores.forEach(sc => scoreCounts[sc] = (scoreCounts[sc] || 0) + 1);
+
+    let tableHTML = `
+      <div class="card bg-white dark:bg-zinc-900 rounded-3xl shadow-xl p-8">
+        <div class="flex justify-between items-start mb-8">
+          <div>
+            <div class="uppercase text-blue-600 dark:text-blue-400 text-sm tracking-widest font-medium">${subject}</div>
+            <h3 class="text-3xl font-bold">${n} Students • ${numQ} Questions</h3>
+          </div>
+          <div class="text-right">
+            <div class="text-5xl font-bold text-emerald-600">${meanScore}</div>
+            <div class="text-sm text-zinc-500">Average Score / ${numQ}</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Chart -->
+          <div>
+            <h4 class="font-semibold mb-4">Score Distribution</h4>
+            <canvas id="chart-${subject.replace(/\s+/g,'')}" height="180"></canvas>
+          </div>
+
+          <!-- Item Analysis Table -->
+          <div class="lg:col-span-2">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b dark:border-zinc-700">
+                  <th class="py-4 text-left font-medium">Question</th>
+                  <th class="py-4 text-center">Difficulty</th>
+                  <th class="py-4 text-center">Discrimination</th>
+                  <th class="py-4 text-center">Action</th>
+                  <th class="py-4 text-left">Distractors</th>
+                </tr>
+              </thead>
+              <tbody>`;
+
+    let insights = [];
+
+    for (let q = 0; q < numQ; q++) {
+      const correctAns = key[q];
+      let correctTotal = 0;
+      let topCorrect = 0, bottomCorrect = 0;
+      const distractorFreq = {};
+
+      students.forEach(s => {
+        const ans = s.answers[q];
+        if (!distractorFreq[ans]) distractorFreq[ans] = {total:0, upper:0, lower:0};
+        distractorFreq[ans].total++;
+        if (ans === correctAns) correctTotal++;
+      });
+
+      upper.forEach(s => {
+        const ans = s.answers[q];
+        if (ans === correctAns) topCorrect++;
+        if (distractorFreq[ans]) distractorFreq[ans].upper++;
+      });
+      lower.forEach(s => {
+        const ans = s.answers[q];
+        if (ans === correctAns) bottomCorrect++;
+        if (distractorFreq[ans]) distractorFreq[ans].lower++;
+      });
+
+      const difficulty = correctTotal / n;
+      const discrimination = groupSize ? ((topCorrect - bottomCorrect) / groupSize) : 0;
+
+      let action = "KEEP";
+      let actionClass = "bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300";
+
+      if (discrimination < 0) {
+        action = "REMOVE";
+        actionClass = "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300";
+        insights.push(`Q${q+1}: Negative discrimination — review or remove item.`);
+      } else if (discrimination < 0.20) {
+        action = "REVISE";
+        actionClass = "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300";
+      }
+
+      if (difficulty > 0.85) insights.push(`Q${q+1}: Too easy (${(difficulty*100).toFixed(0)}%)`);
+      if (difficulty < 0.25) insights.push(`Q${q+1}: Too difficult (${(difficulty*100).toFixed(0)}%)`);
+
+      let distrHTML = '';
+      Object.keys(distractorFreq).forEach(opt => {
+        if (opt === correctAns) return;
+        const f = distractorFreq[opt];
+        const uPct = groupSize ? (f.upper / groupSize * 100).toFixed(0) : 0;
+        const lPct = groupSize ? (f.lower / groupSize * 100).toFixed(0) : 0;
+        distrHTML += `<span class="inline-block px-3 py-1 text-xs rounded-full mr-1 ${uPct > 30 ? 'bg-rose-100 text-rose-700' : 'bg-zinc-100 dark:bg-zinc-800'}">${opt} <span class="text-[10px]">(${uPct}%↑)</span></span>`;
+      });
+
+      tableHTML += `
+        <tr class="border-b dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800">
+          <td class="py-5 font-medium">Q${q+1}</td>
+          <td class="text-center font-mono">${difficulty.toFixed(2)}</td>
+          <td class="text-center font-semibold ${discrimination >= 0.3 ? 'text-emerald-600' : discrimination >= 0.2 ? 'text-amber-600' : 'text-red-600'}">${discrimination.toFixed(2)}</td>
+          <td class="text-center"><span class="px-5 py-1 rounded-full text-xs font-semibold ${actionClass}">${action}</span></td>
+          <td class="text-xs">${distrHTML || '—'}</td>
+        </tr>`;
+    }
+
+    tableHTML += `</tbody></table></div></div>`;
+
+    if (insights.length > 0) {
+      tableHTML += `
+        <div class="mt-6 p-6 bg-amber-50 dark:bg-amber-950 border-l-4 border-amber-500 rounded-2xl">
+          <h5 class="font-semibold mb-3 flex items-center gap-2"><i class="fa-solid fa-lightbulb"></i> Insights & Recommendations</h5>
+          <ul class="space-y-1 text-sm">${insights.map(i => `<li>• ${i}</li>`).join('')}</ul>
+        </div>`;
+    }
+
+    tableHTML += `</div>`;
+
+    html += tableHTML;
+
+    // Render Chart
+    setTimeout(() => {
+      const canvas = document.getElementById(`chart-${subject.replace(/\s+/g,'')}`);
+      if (canvas) {
+        new Chart(canvas, {
+          type: 'bar',
+          data: {
+            labels: Object.keys(scoreCounts).sort((a,b)=>Number(a)-Number(b)),
+            datasets: [{
+              label: 'Number of Students',
+              data: Object.keys(scoreCounts).sort((a,b)=>Number(a)-Number(b)).map(k => scoreCounts[k]),
+              backgroundColor: '#2563eb',
+              borderRadius: 8,
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { stepSize: 1 }}}
+          }
+        });
+      }
+    }, 200);
+  });
+
+  document.getElementById('output').innerHTML = html;
+}
+</script>
+</body>
+</html>
